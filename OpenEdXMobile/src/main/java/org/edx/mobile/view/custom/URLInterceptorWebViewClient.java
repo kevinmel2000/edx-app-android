@@ -102,6 +102,7 @@ public class URLInterceptorWebViewClient extends WebViewClient {
         //We need to hide the loading progress if the Page starts rendering.
         webView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
+                android.util.Log.i("Lahore", "pageProgress="+progress+", loadingInitialUrl="+loadingInitialUrl+", class="+activity.getClass().getSimpleName());
                 if (progress > 25) {
                     /*
                      * 'loadingInitialUrl is marked to false on 25% progress of initial page load
@@ -109,6 +110,7 @@ public class URLInterceptorWebViewClient extends WebViewClient {
                      * a web page before 'onPageFinished' has been called.
                      */
                     loadingInitialUrl = false;
+                    android.util.Log.i("Lahore", "loadingInitialUrl="+loadingInitialUrl+", class="+activity.getClass().getSimpleName()+", setupWebView");
                 }
                 if (pageStatusListener != null) {
                     pageStatusListener.onPageLoadProgressChanged(view, progress);
@@ -138,6 +140,7 @@ public class URLInterceptorWebViewClient extends WebViewClient {
         super.onPageFinished(view, url);
 
         loadingInitialUrl = false;
+        android.util.Log.i("Lahore", "loadingInitialUrl="+loadingInitialUrl+", class="+activity.getClass().getSimpleName()+", onPageFinished");
         if (!redirect) {
             loadingFinished = true;
         }
@@ -170,6 +173,8 @@ public class URLInterceptorWebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+        android.util.Log.i("Lahore", "shouldOverrideUrlLoading, redirect="+redirect+", url="+url);
         if (!loadingFinished) {
             redirect = true;
         }
@@ -188,6 +193,7 @@ public class URLInterceptorWebViewClient extends WebViewClient {
             // redirect the user to external browser.
             // Inspiration of this solution has been taken from: https://stackoverflow.com/questions/3149216/how-to-listen-for-a-webview-finishing-loading-a-url/5172952#5172952
             loadingInitialUrl = false;
+            android.util.Log.i("Lahore", "loadingInitialUrl="+loadingInitialUrl+", class="+activity.getClass().getSimpleName()+", shouldOverrideUrlLoading");
             // Return false means the current WebView handles the url.
             return false;
         } else if (isAllLinksExternal || isExternalLink(url)) {
@@ -208,6 +214,7 @@ public class URLInterceptorWebViewClient extends WebViewClient {
 
     public void setLoadingInitialUrl(boolean isLoadingInitialUrl) {
         this.loadingInitialUrl = isLoadingInitialUrl;
+        android.util.Log.i("Lahore", "loadingInitialUrl="+loadingInitialUrl+", class="+activity.getClass().getSimpleName()+", setLoadingInitialUrl");
     }
 
     @Override
